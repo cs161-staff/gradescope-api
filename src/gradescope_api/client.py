@@ -2,10 +2,10 @@ from typing import Any, Optional
 from bs4 import BeautifulSoup
 import requests
 from requests import Response
-from src.course import GradescopeCourse
+from gradescope_api.course import GradescopeCourse
 
-from src.errors import check_response
-from src.utils import get_url_id
+from gradescope_api.errors import check_response
+from gradescope_api.utils import get_url_id
 
 USER_AGENT = "gradescope-api"
 BASE_URL = "https://gradescope.com"
@@ -74,4 +74,4 @@ class GradescopeClient:
 
     def get_course(self, course_url: Optional[str] = None, course_id: Optional[str] = None):
         course_id = course_id or get_url_id(course_url, "courses")
-        return GradescopeCourse(client=self, course_id=course_id)
+        return GradescopeCourse(_client=self, course_id=course_id)

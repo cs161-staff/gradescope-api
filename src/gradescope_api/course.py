@@ -1,10 +1,14 @@
+from __future__ import annotations
+
 import json
-from typing import Dict, List, Optional
+from typing import TYPE_CHECKING, Dict, List, Optional
 
 from bs4 import BeautifulSoup
-from src.client import GradescopeClient
-from src.errors import check_response
-from src.student import GradescopeStudent
+from gradescope_api.errors import check_response
+from gradescope_api.student import GradescopeStudent
+
+if TYPE_CHECKING:
+    from gradescope_api.client import GradescopeClient
 
 
 class GradescopeCourse:
@@ -36,7 +40,7 @@ class GradescopeCourse:
                     data_cm: Dict = json.loads(editButton["data-cm"])
                     self.roster.append(
                         GradescopeStudent(
-                            client=self._client,
+                            _client=self._client,
                             user_id=user_id,
                             full_name=data_cm.get("full_name"),
                             first_name=data_cm.get("first_name"),

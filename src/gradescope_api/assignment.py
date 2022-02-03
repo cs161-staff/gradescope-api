@@ -1,10 +1,12 @@
 from datetime import datetime
 from http import client
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
-from src.client import GradescopeClient
-from src.course import GradescopeCourse
-from src.errors import check_response
+from gradescope_api.course import GradescopeCourse
+from gradescope_api.errors import check_response
+
+if TYPE_CHECKING:
+    from gradescope_api.client import GradescopeClient
 
 GRADESCOPE_DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
 

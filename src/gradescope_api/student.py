@@ -1,11 +1,14 @@
-from typing import Optional
-from src.client import GradescopeClient
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
+
+if TYPE_CHECKING:
+    from gradescope_api.client import GradescopeClient
 
 
 class GradescopeStudent:
     def __init__(
         self,
-        client: GradescopeClient,
+        _client: GradescopeClient,
         user_id: str,
         full_name: Optional[str] = None,
         first_name: Optional[str] = None,
@@ -13,7 +16,7 @@ class GradescopeStudent:
         sid: Optional[str] = None,
         email: Optional[str] = None,
     ) -> None:
-        self.client = client
+        self._client = _client
         self.user_id = user_id
         self.full_name = full_name
         self.first_name = first_name
