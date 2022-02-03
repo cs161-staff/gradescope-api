@@ -23,3 +23,6 @@ class GradescopeStudent:
         self.last_name = last_name
         self.sid = sid
         self.email = email
+
+    def get_user_id(self) -> str:
+        return self.user_id

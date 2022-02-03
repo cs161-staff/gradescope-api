@@ -1,9 +1,8 @@
-from msilib.schema import Error
 from requests import Response
 import json
 
 
-class GradescopeAPIError(Error):
+class GradescopeAPIError(Exception):
     pass
 
 

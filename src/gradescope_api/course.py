@@ -6,6 +6,8 @@ from typing import TYPE_CHECKING, Dict, List, Optional
 from bs4 import BeautifulSoup
 from gradescope_api.errors import check_response
 from gradescope_api.student import GradescopeStudent
+from gradescope_api.assignment import GradescopeAssignment
+from gradescope_api.utils import get_url_id
 
 if TYPE_CHECKING:
     from gradescope_api.client import GradescopeClient
@@ -61,3 +63,10 @@ class GradescopeCourse:
             if email != None and student.email == email:
                 return student
         return None
+
+    def get_assignment(
+        self, assignment_id: Optional[str] = None, assignment_url: Optional[str] = None
+    ) -> Optional[GradescopeAssignment]:
+        assert assignment_id or assignment_url
+        assignment_id = assignment_id or get_url_id(url=assignment_url, kind="assignments")
+        return GradescopeAssignment(_client=self._client, _course=self, assignment_id=assignment_id)
