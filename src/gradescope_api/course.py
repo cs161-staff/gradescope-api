@@ -2,9 +2,9 @@ import json
 from typing import Dict, List, Optional
 
 from bs4 import BeautifulSoup
-from core.client import GradescopeClient
-from core.errors import check_response
-from core.student import GradescopeStudent
+from src.client import GradescopeClient
+from src.errors import check_response
+from src.student import GradescopeStudent
 
 
 class GradescopeCourse:

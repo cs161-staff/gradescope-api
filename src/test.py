@@ -1,8 +1,8 @@
-from core.client import GradescopeClient
+from src.client import GradescopeClient
 from dotenv import load_dotenv
 import os
 
-from core.course import GradescopeCourse
+from src.course import GradescopeCourse
 
 load_dotenv()
 

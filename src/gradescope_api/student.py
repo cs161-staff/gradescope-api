@@ -1,5 +1,5 @@
 from typing import Optional
-from core.client import GradescopeClient
+from src.client import GradescopeClient
 
 
 class GradescopeStudent:
