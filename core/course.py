@@ -47,3 +47,13 @@ class GradescopeCourse:
                     )
 
         return self.roster
+
+    def get_student(self, sid: Optional[str] = None, email: Optional[str] = None) -> Optional[GradescopeStudent]:
+        assert sid or email
+        roster = self.get_roster()
+        for student in roster:
+            if sid != None and student.sid == sid:
+                return student
+            if email != None and student.email == email:
+                return student
+        return None
