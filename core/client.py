@@ -2,8 +2,10 @@ from typing import Any, Optional
 from bs4 import BeautifulSoup
 import requests
 from requests import Response
+from core.course import GradescopeCourse
 
 from core.errors import check_response
+from core.utils import get_url_id
 
 USER_AGENT = "gradescope-api"
 BASE_URL = "https://gradescope.com"
@@ -55,9 +57,6 @@ class GradescopeClient:
             headers["X-CSRF-Token"] = header_token
         return self.session.post(url, data=data, json=json, files=files, headers=headers)
 
-    def get(self, url: str) -> Response:
-        return self.session.get(url)
-
     def _log_in(self, email: str, password: str):
         url = BASE_URL + "/login"
         token = self._get_token(url)
@@ -72,3 +71,7 @@ class GradescopeClient:
         }
         response = self.submit_form(url=url, data=payload)
         check_response(response, error="failed to log in")
+
+    def get_course(self, course_url: Optional[str] = None, course_id: Optional[str] = None):
+        course_id = course_id or get_url_id(course_url, "courses")
+        return GradescopeCourse(client=self, course_id=course_id)

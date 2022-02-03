@@ -17,9 +17,13 @@ class RequestError(GradescopeAPIError):
 def check_response(response: Response, error: str):
     if not response.ok:
         raise RequestError(
-            'An error occurred in a request to Gradescope servers. Details: ' + '\n' +
-            'Status Code: ' + str(response.status_code) + '\n' +
-            'Error: ' + str(error) + '\n'
-            'Request: ' + json.dumps(vars(response.request)) + '\n' +
-            'Response: ' + str(response.content)
+            "An error occurred in a request to Gradescope servers. Details: "
+            + "\n"
+            + "Status Code: "
+            + str(response.status_code)
+            + "\n"
+            + "Error: "
+            + str(error)
+            + "\n"
+            "Request: " + json.dumps(vars(response.request)) + "\n" + "Response: " + str(response.content)
         )
