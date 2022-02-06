@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from datetime import datetime
-from http import client
 from typing import TYPE_CHECKING, Optional
 
 from gradescope_api.errors import check_response

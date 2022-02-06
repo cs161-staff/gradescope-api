@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="gradescope-api",
-    version="0.0.1",
+    version="0.0.2",
     author="CS 161 Staff",
     author_email="cs161-staff@berkeley.edu",
     description="An unofficial Gradescope API.",
