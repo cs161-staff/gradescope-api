@@ -25,5 +25,5 @@ def check_response(response: Response, error: str):
             + "Error: "
             + str(error)
             + "\n"
-            "Request: " + json.dumps(vars(response.request)) + "\n" + "Response: " + str(response.content)
+            "Request: " + str(vars(response.request)) + "\n" + "Response: " + str(response.content)
         )
