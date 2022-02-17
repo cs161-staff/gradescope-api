@@ -1,3 +1,4 @@
+from time import time
 from typing import Any, Optional
 from bs4 import BeautifulSoup
 import requests
@@ -27,7 +28,7 @@ class GradescopeClient:
         Return the Gradescope authenticity token.
         """
         if not content:
-            response = self.session.get(url)
+            response = self.session.get(url, timeout=20)
             content = response.content
 
         soup = BeautifulSoup(content, "html.parser")
@@ -55,7 +56,7 @@ class GradescopeClient:
         headers = {"Host": "www.gradescope.com", "Origin": "https://www.gradescope.com", "Referer": referer_url}
         if header_token is not None:
             headers["X-CSRF-Token"] = header_token
-        return self.session.post(url, data=data, json=json, files=files, headers=headers)
+        return self.session.post(url, data=data, json=json, files=files, headers=headers, timeout=20)
 
     def _log_in(self, email: str, password: str):
         url = BASE_URL + "/login"

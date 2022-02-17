@@ -50,5 +50,5 @@ class GradescopeAssignment:
             }
         }
 
-        response = self._client.session.post(url, headers=headers, json=payload)
+        response = self._client.session.post(url, headers=headers, json=payload, timeout=20)
         check_response(response, "creating an extension failed")

@@ -27,7 +27,7 @@ class GradescopeCourse:
             return self.roster
 
         url = self._client.get_base_url() + f"/courses/{self.course_id}/memberships"
-        response = self._client.session.get(url=url)
+        response = self._client.session.get(url=url, timeout=20)
         check_response(response, "failed to get roster")
 
         soup = BeautifulSoup(response.content, "html.parser")
