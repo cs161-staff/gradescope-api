@@ -25,7 +25,20 @@ class GradescopeAssignment:
 
     def get_url(self) -> str:
         return self._course.get_url() + f"/assignments/{self.assignment_id}"
+    
+    def regrade_all(self): 
+        url = self.get_url() + "/submissions/regrade"
+        headers = {
+            "Host": "www.gradescope.com",
+            "Origin": "https://www.gradescope.com",
+            "Referer": url,
+            "X-CSRF-Token": self._client._get_token(url, meta="csrf-token"),
+        }
+        payload = ''
 
+        response = self._client.session.post(url, headers=headers, data=payload, timeout=20)
+        check_response(response, "creating an regrade failed")
+    
     def apply_extension(self, email: str, num_days: int):
         """
         A new method to apply an extension to a Gradescope assignment, given an email and a number of days.
