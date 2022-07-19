@@ -68,9 +68,11 @@ class GradescopeAssignment:
 
         # Once we fetch the page, parse out the data (students + due dates)
         soup = BeautifulSoup(response.content, "html.parser")
-        props = soup.find("li", {"data-react-class": "AddExtension"})["data-react-props"]
+        props = soup.find(
+            "li", {"data-react-class": "AddExtension"})["data-react-props"]
         data = json.loads(props)
-        students = {row["email"]: row["id"] for row in data.get("students", [])}
+        students = {row["email"]: row["id"]
+                    for row in data.get("students", [])}
         user_id = students.get(email)
         if not user_id:
             raise GradescopeAPIError("student email not found")
@@ -83,7 +85,9 @@ class GradescopeAssignment:
 
         assignment = data["assignment"]
         new_due_date = transform_date(assignment["due_date"])
-        new_hard_due_date = transform_date(assignment["hard_due_date"])
+
+        if assignment["hard_due_date"]:
+            new_hard_due_date = transform_date(assignment["hard_due_date"])
 
         # Make the post request to create the extension
         url = self.get_url() + "/extensions"
@@ -97,16 +101,19 @@ class GradescopeAssignment:
             "override": {
                 "user_id": user_id,
                 "settings": {
-                    "due_date": {"type": "absolute", "value": new_due_date.strftime(GRADESCOPE_DATETIME_FORMAT)},
-                    "hard_due_date": {
-                        "type": "absolute",
-                        "value": new_hard_due_date.strftime(GRADESCOPE_DATETIME_FORMAT),
-                    },
+                    "due_date": {"type": "absolute", "value": new_due_date.strftime(GRADESCOPE_DATETIME_FORMAT)}
                 },
             }
         }
 
-        response = self._client.session.post(url, headers=headers, json=payload, timeout=20)
+        if assignment["hard_due_date"]:
+            payload["override"]["settings"]["hard_due_date"] = {
+                "type": "absolute",
+                        "value": new_hard_due_date.strftime(GRADESCOPE_DATETIME_FORMAT),
+            }
+
+        response = self._client.session.post(
+            url, headers=headers, json=payload, timeout=20)
         check_response(response, "creating an extension failed")
 
     # deprecated
@@ -139,5 +146,6 @@ class GradescopeAssignment:
             }
         }
 
-        response = self._client.session.post(url, headers=headers, json=payload, timeout=20)
+        response = self._client.session.post(
+            url, headers=headers, json=payload, timeout=20)
         check_response(response, "creating an extension failed")
