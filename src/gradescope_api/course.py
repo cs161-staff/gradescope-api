@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime
+from os.path import join
 from typing import TYPE_CHECKING, Dict, List, Optional
 
 from bs4 import BeautifulSoup
@@ -18,6 +20,39 @@ class GradescopeCourse:
         self._client = _client
         self.course_id = course_id
         self.roster: List[GradescopeStudent] = []
+    
+    def create_assignment(self, name, start_date, due_date, late_due_date = None):
+        """
+        creates an assignment with given date/s
+        name          : name of assignment, must be unique
+        start_date    : assignment start datetime
+        due_date      : assignment due datetime
+        late_due_date : if the assignment canbe due late, datetime for that
+        """
+        STRFMT = '%b %d %G %I:%M %p'
+        assert isinstance(start_date, datetime) and isinstance(due_date, datetime)
+        if late_due_date:
+            assert isinstance(late_due_date, datetime)
+        start_date = start_date.strftime(STRFMT)
+        due_date = due_date.strftime(STRFMT)
+        late_due_date = late_due_date.strftime(STRFMT) if late_due_date else late_due_date
+        form_data = {
+            'authenticity_token': self._client._get_token(self._client.get_base_url(), meta="csrf-token"),
+            'assignment[type]': "OnlineAssignment",
+            'assignment[title]': name,
+            'assignment[submissions_anonymized]': 0,
+            'assignment[student_submission]': 'true',
+            'assignment[release_date_string]': start_date,
+            "assignment[due_date_string]": due_date,
+            'assignment[allow_late_submissions]': bool(late_due_date),
+            **({"assignment[hard_due_date_string]": late_due_date} if late_due_date else {}),
+            "assignment[enforce_time_limit]": 0,
+            "assignment[group_submission]": 0,
+            "assignment[group_size]": "",
+            "assignment[when_to_create_rubric]": "while_grading"
+        }
+        response = self._client.session.post(join(self.get_url(),'assignments'), data=form_data, timeout=20)
+        return response
 
     def get_url(self) -> str:
         return self._client.get_base_url() + f"/courses/{self.course_id}"
