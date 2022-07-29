@@ -9,7 +9,7 @@ from gradescope_api.errors import check_response
 from gradescope_api.utils import get_url_id
 
 USER_AGENT = "gradescope-api"
-BASE_URL = "https://gradescope.com"
+BASE_URL = "https://www.gradescope.com"
 
 
 class GradescopeClient:

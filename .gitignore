@@ -2,3 +2,4 @@ gradescope-api
 .DS_Store
 .env
 .vscode
+.pyc
