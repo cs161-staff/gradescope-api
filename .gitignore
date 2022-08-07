@@ -3,3 +3,4 @@ gradescope-api
 .env
 .vscode
 .pyc
+src/gradescope_api/__pycache__/

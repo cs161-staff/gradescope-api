@@ -1,0 +1,15 @@
+from datetime import datetime, timedelta
+from gradescope_api.client import GradescopeClient
+from gradescope_api.course import GradescopeCourse
+from gradescope_api.self_grades import *
+from gradescope_api.self_grades_autograde import *
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+# https://codebeautify.org/htmlviewer
+assignment_id = "2153150"
+
+client = GradescopeClient(email=os.environ["GS_EMAIL"], password=os.environ["GS_PASSWORD"])
+course = client.get_course(course_url="https://www.gradescope.com/courses/404061")
+course.grade_self_grade_assignment(assignment_id, regrade_all = False)
