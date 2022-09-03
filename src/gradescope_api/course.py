@@ -94,10 +94,10 @@ class GradescopeCourse:
         check_response(response, "failed to access grade submissions page")
         soup = BeautifulSoup(response.content, "html.parser")
 
-        subquestion_list = soup.find_all("div", {"class": "gradingDashboard--subquestion"})
+        subquestion_list = soup.find_all("div", {"class": ["gradingDashboard--subquestion", "gradingDashboard--question"]})
         for subquestion in subquestion_list:
             question_num = subquestion.find("a", {"class": "link-noUnderline"}).text.split(":")[0]
-            submission_link = self._client.get_base_url() + subquestion.find("a", {"class": "link-gray link-noUnderline gradingDashboard--listAllLink"})["href"]
+            submission_link = self._client.get_base_url() + subquestion.find("a", {"class": re.compile(r'link-gray link-noUnderline gradingDashboard--listAllLink')})["href"]
             grading_progress = float(subquestion.find("span", {"class": "gradingDashboard--progressPercent"}).text[:-1])
             if grading_progress < 100 or regrade_all:
                 print(f"QUESTION {question_num}: grading, {submission_link}")
