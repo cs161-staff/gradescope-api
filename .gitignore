@@ -2,3 +2,5 @@ gradescope-api
 .DS_Store
 .env
 .vscode
+.pyc
+src/gradescope_api/__pycache__/
